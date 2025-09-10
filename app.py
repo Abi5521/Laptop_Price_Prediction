@@ -8,7 +8,7 @@ with open("laptop_price_model.pkl", "rb") as f:
 
 st.title("💻 Laptop Price Prediction App")
 
-# Dropdowns with "Select ..." placeholders
+# Essential inputs only
 brand = st.selectbox("Brand", ["Select Brand", "ASUS", "Lenovo", "HP", "Dell", "Acer", "MSI", "Apple", "Avita", "Huawei"])
 processor_brand = st.selectbox("Processor Brand", ["Select Processor Brand", "Intel", "AMD", "M1"])
 processor_name = st.selectbox("Processor Name", ["Select Processor", "Core i3", "Core i5", "Core i7", "Ryzen 5", "Ryzen 7", "M1", "Celeron Dual"])
@@ -17,26 +17,16 @@ ram_gb = st.number_input("RAM (GB)", min_value=2, max_value=64, value=8)
 ram_type = st.selectbox("RAM Type", ["Select RAM Type", "DDR4", "DDR5", "LPDDR4", "LPDDR5"])
 ssd = st.number_input("SSD (GB)", min_value=0, max_value=2000, value=512)
 hdd = st.number_input("HDD (GB)", min_value=0, max_value=2000, value=0)
-os = st.selectbox("Operating System", ["Select OS", "Windows", "Mac", "DOS"])
-os_bit = st.selectbox("OS Bit", ["Select OS Bit", "32-bit", "64-bit"])
 graphic_card_gb = st.number_input("Graphics Card (GB)", min_value=0, max_value=16, value=2)
-weight = st.selectbox("Weight Category", ["Select Weight", "Casual", "ThinNLight", "Gaming"])
-warranty = st.selectbox("Warranty", ["Select Warranty", "No warranty", "1 year", "2 years"])
-touchscreen = st.selectbox("Touchscreen", ["Select Option", "Yes", "No"])
-msoffice = st.selectbox("MS Office", ["Select Option", "Yes", "No"])
-rating = st.selectbox("Rating", ["Select Rating", "1 star", "2 stars", "3 stars", "4 stars", "5 stars"])
-num_ratings = st.number_input("Number of Ratings", min_value=0, value=100)
-num_reviews = st.number_input("Number of Reviews", min_value=0, value=10)
+os = st.selectbox("Operating System", ["Select OS", "Windows", "Mac", "DOS"])
 
-# Prepare input data
+# Create dataframe with only essential features
 input_data = pd.DataFrame([[
     brand, processor_brand, processor_name, processor_gen, ram_gb, ram_type,
-    ssd, hdd, os, os_bit, graphic_card_gb, weight, warranty,
-    touchscreen, msoffice, rating, num_ratings, num_reviews
+    ssd, hdd, os, graphic_card_gb
 ]], columns=[
     "brand", "processor_brand", "processor_name", "processor_gnrtn", "ram_gb", "ram_type",
-    "ssd", "hdd", "os", "os_bit", "graphic_card_gb", "weight", "warranty",
-    "Touchscreen", "msoffice", "rating", "Number of Ratings", "Number of Reviews"
+    "ssd", "hdd", "os", "graphic_card_gb"
 ])
 
 # Predict button with validation
