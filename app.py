@@ -18,24 +18,34 @@ hdd = st.number_input("HDD (GB)", min_value=0, max_value=2000, value=0)
 os_map = {"Windows": 0, "Mac": 1, "DOS": 2}
 graphic_card_gb = st.number_input("Graphics Card (GB)", min_value=0, max_value=16, value=2)
 
-input_data = pd.DataFrame([[
-    brand_map[brand],
-    processor_brand_map[processor_brand],
-    processor_name_map[processor_name],
-    processor_gen_map[processor_gen],
-    ram_gb,
-    ram_type_map[ram_type],
-    ssd,
-    hdd,
-    os_map[os],
-    graphic_card_gb
-]], columns=[
-    "brand", "processor_brand", "processor_name", "processor_gnrtn", "ram_gb",
-    "ram_type", "ssd", "hdd", "os", "graphic_card_gb"
-])
+if (
+    brand.startswith("Select") or
+    processor_brand.startswith("Select") or
+    processor_name.startswith("Select") or
+    processor_gen.startswith("Select") or
+    ram_type.startswith("Select") or
+    os.startswith("Select OS")
+):
+    input_data = None
+else:
+    input_data = pd.DataFrame([[
+        brand_map[brand],
+        processor_brand_map[processor_brand],
+        processor_name_map[processor_name],
+        processor_gen_map[processor_gen],
+        ram_gb,
+        ram_type_map[ram_type],
+        ssd,
+        hdd,
+        os_map[os],
+        graphic_card_gb
+    ]], columns=[
+        "brand", "processor_brand", "processor_name", "processor_gnrtn", "ram_gb",
+        "ram_type", "ssd", "hdd", "os", "graphic_card_gb"
+    ])
 
 if st.button("Predict Price"):
-    if any(val.startswith("Select") for val in input_data.iloc[0].astype(str).values):
+    if input_data is None:
         st.warning("⚠️ Please fill all the fields before predicting.")
     else:
         try:
@@ -43,3 +53,4 @@ if st.button("Predict Price"):
             st.success(f"💰 Estimated Laptop Price: ₹{int(prediction):,}")
         except Exception as e:
             st.error(f"Error in prediction: {e}")
+
